@@ -4,6 +4,7 @@ services:
   web:
     image: "odoo:${VERSION:-15}"
     container_name: "${APP:-myodoo}-odoo-v${VERSION:-15}"
+    user: root
     depends_on:
       - db
     ports:
