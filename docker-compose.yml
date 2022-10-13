@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  web:
+    image: "odoo:${VERSION:-15}"
+    container_name: "${APP:-myodoo}-odoo-v${VERSION:-15}"
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+      - "8072:8072"
+    # restart: always
+    volumes:
+      - "odoo-web-data:/var/lib/odoo"
+      - "./v${VERSION:-15}/config/odoo.conf:/etc/odoo/odoo.conf"
+      - "./v${VERSION:-15}/addons:/mnt/extra-addons"
+    environment:
+      - PASSWORD_FILE=/run/secrets/postgresql_password
+    secrets:
+      - postgresql_password
+
+  db:
+    image: postgres:14
+    container_name: "${APP:-myodoo}-db-v${VERSION:-15}"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgresql_password
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    # restart: always
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+    secrets:
+      - postgresql_password
+
+volumes:
+  odoo-web-data:
+    name: "${APP:-myodoo}-web-v${VERSION:-15}"
+  odoo-db-data:
+    name: "${APP:-myodoo}-db-v${VERSION:-15}"
+
+secrets:
+  postgresql_password:
+    file: odoo_pg_pass
