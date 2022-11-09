@@ -1,3 +1,4 @@
 *.env
 odoo.conf
 odoo_pg_pass
+private.*
