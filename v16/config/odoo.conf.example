@@ -367,7 +367,7 @@ max_cron_threads = 1
 ; ------
 ; --workers | type = int | Specify the number of workers, 0 disable prefork mode.
 ; ------
-workers = 8
+; workers = 8
 
 ; ------
 ; --limit-memory-soft | type = int | Maximum allowed virtual memory per worker (in bytes), when reached the worker be reset after the current request (default 2048MiB).
